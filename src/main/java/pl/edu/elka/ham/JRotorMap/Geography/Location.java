@@ -16,11 +16,21 @@ public class Location {
     private Latitude    lat;
     private Longitude   lon;
 
+    /**
+     * Default constructor - sets latitude and longitude to 0.
+     */
     public Location() {
         lat = new Latitude();
         lon = new Longitude();
     }
 
+    /**
+     * Constructor using DDD without sign notation.
+     * @param latddd latitude in DDD format.
+     * @param latd latitude direction.
+     * @param londdd longitude in DDD format.
+     * @param lond longitude direction.
+     */
     public Location(double latddd, Latitude.LatitudeDirections latd, double londdd, Longitude.LongitudeDirections lond) {
         lat = new Latitude(latddd, latd);
         lon = new Longitude(londdd, lond);
@@ -69,10 +79,16 @@ public class Location {
 
     }
 
+    /**
+     * @return Latitude object from Location instance.
+     */
     public Latitude getLatitude() {
         return lat;
     }
 
+    /**
+     * @return Longitude object from Location instance.
+     */
     public Longitude getLongitude() {
         return lon;
     }
@@ -87,6 +103,9 @@ public class Location {
         return new GeoPosition(latitude, longitude);
     }
 
+    /**
+     * @return Location string exported to string.
+     */
     public String exportString()
     {
         DecimalFormat df = new DecimalFormat("#.######", new DecimalFormatSymbols(Locale.US));

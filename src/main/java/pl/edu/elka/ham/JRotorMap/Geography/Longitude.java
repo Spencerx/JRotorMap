@@ -8,6 +8,9 @@ public class Longitude extends Coordinate {
 
     private LongitudeDirections direction;
 
+    /**
+     * Constructor - sets longitude to 0E
+     */
     public Longitude() {
         super();
         direction = LongitudeDirections.East;
@@ -18,15 +21,27 @@ public class Longitude extends Coordinate {
         direction = ld;
     }
 
+    /**
+     * Longitude constructor in DMM manner.
+     * @param degrees Degrees, integer only.
+     * @param mm Minutes
+     * @param ld Direction
+     */
     public Longitude(int degrees, double mm, LongitudeDirections ld) {
         super(degrees, mm);
         direction = ld;
     }
 
+    /**
+     * @return Longitude direction from instance.
+     */
     public LongitudeDirections getDirection() {
         return direction;
     }
 
+    /**
+     * @return Longitude object as String.
+     */
     public String toString() {
         String d;
         if (direction == LongitudeDirections.East)
