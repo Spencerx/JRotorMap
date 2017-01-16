@@ -24,19 +24,23 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Interprets XML from HamQTH.com.
  */
 public class HamQTHQuery implements IQuery {
-    Location loc;
-    String lastQuery;
+    private Location loc;
+    private String lastQuery;
+
+    /**
+     * Default constructor.
+     * @param query query entered by user.
+     * @throws Exception if XML is malformed on other cases.
+     */
     public HamQTHQuery(String query) throws Exception {
         lastQuery = query;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         InputStream is = new URL("https://www.hamqth.com/dxcc.php?callsign=" + query).openStream();
         Document doc = db.parse(is);
-        System.out.println(doc.getAttributes());
-        //printDocument(doc, System.out);
         NodeList dxcc = doc.getElementsByTagName("dxcc");
         NodeList dxccChild = dxcc.item(0).getChildNodes();
         String latitude = "", longitude = "";
@@ -53,15 +57,22 @@ public class HamQTHQuery implements IQuery {
         loc = new Location(latitude + ", " + longitude);
     }
 
+    /**
+     * @return query from user.
+     */
     public String getQueryString() {
         return lastQuery;
     }
 
+    /**
+     * @return location from webservice.
+     */
+    @Override
     public Location getFoundLocation() {
         return loc;
     }
 
-    public static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
+    private static void printDocument(Document doc, OutputStream out) throws IOException, TransformerException {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");

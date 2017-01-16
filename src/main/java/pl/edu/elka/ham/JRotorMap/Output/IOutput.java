@@ -3,8 +3,11 @@ package pl.edu.elka.ham.JRotorMap.Output;
 import pl.edu.elka.ham.JRotorMap.Geography.Result;
 
 /**
- * Created by erxyi on 10.01.17.
+ * Interface which generalise output - in future might be used to implements i.e. sending Result object over network.
  */
 public interface IOutput {
-    public void saveOutput(Result result);
+    /**
+     * @param result Result object to be saved.
+     */
+    void saveOutput(Result result);
 }

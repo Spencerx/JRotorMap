@@ -1,7 +1,7 @@
 package pl.edu.elka.ham.JRotorMap.Geography;
 
 /**
- * Created by erxyi on 09.01.17.
+ * Coordinate class.
  */
 public class Coordinate {
     private int value_d;

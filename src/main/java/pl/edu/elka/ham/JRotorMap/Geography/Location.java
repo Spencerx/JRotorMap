@@ -9,15 +9,12 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
- * Created by erxyi on 09.01.17.
+ * Location - pair of Longitude and latitude objects.
  */
-
-
-
 public class Location {
 
-    Latitude    lat;
-    Longitude   lon;
+    private Latitude    lat;
+    private Longitude   lon;
 
     public Location() {
         lat = new Latitude();
@@ -29,6 +26,11 @@ public class Location {
         lon = new Longitude(londdd, lond);
     }
 
+    /**
+     * Constructor which accepts string data.
+     * @param input location in text form, to be parsed.
+     * @throws RuntimeException Thrown if parsing fails.
+     */
     public Location(String input) throws RuntimeException {
         double latitude, longitude;
         Latitude.LatitudeDirections latd;

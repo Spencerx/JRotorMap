@@ -1,4 +1,4 @@
-package pl.edu.elka.ham.JRotorMap.Internal;
+package pl.edu.elka.ham.JRotorMap.Internal.GUI.Map;
 
 import org.jxmapviewer.JXMapViewer;
 
@@ -7,13 +7,11 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.nio.Buffer;
-import java.nio.BufferOverflowException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Renders waypoints created by user. Shouldn't be used alone.
  */
 public class MapPointRenderer implements org.jxmapviewer.viewer.WaypointRenderer<MapPoint> {
 

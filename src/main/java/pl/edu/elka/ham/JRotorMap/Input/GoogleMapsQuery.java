@@ -8,16 +8,21 @@ import com.google.maps.model.GeocodingResult;
 import pl.edu.elka.ham.JRotorMap.Geography.Location;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Adapter to GoogleMaps geocoding services.
  */
 public class GoogleMapsQuery implements IQuery {
-    Location location;
-    String lastQuery;
-    public GoogleMapsQuery(String query, String api_key) {
+    private Location location;
+    private String lastQuery;
+
+    /**
+     * Default constructor.
+     * @param query query entered by user.
+     * @param api_key api key from configuration file.
+     * @throws RuntimeException thrown if there's something wrong(bad api key, location not found, etc.)
+     */
+    public GoogleMapsQuery(String query, String api_key) throws RuntimeException {
         GeoApiContext context = new GeoApiContext().setApiKey(api_key);
         lastQuery = query;
-        double latitude;
-        double longitude;
         try
         {
             GeocodingResult[] results = GeocodingApi.geocode(context, query).await();
@@ -37,10 +42,19 @@ public class GoogleMapsQuery implements IQuery {
             throw new RuntimeException("GoogleMaps general exception:" + e);
         }
     }
+
+    /**
+     * @return Location from processed user query.
+     */
+    @Override
     public Location getFoundLocation() {
         return location;
     }
 
+    /**
+     * @return query entered by user.
+     */
+    @Override
     public String getQueryString() {
         return lastQuery;
     }

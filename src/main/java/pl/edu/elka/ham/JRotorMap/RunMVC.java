@@ -9,9 +9,12 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 /**
- * Created by erxyi on 10.01.17.
+ * Class which glues MVC pattern together.
  */
 public class RunMVC {
+    /**
+     * Runs an app.
+     */
     public RunMVC() {
         String configFilepath = "jRotor.properties";
         Settings settings;
@@ -21,7 +24,7 @@ public class RunMVC {
         }
         catch(FileNotFoundException e)
         {
-            showMessageDialog(null, "Config file not found, so I will create one.");
+            showMessageDialog(null, "Config file not found, so I will create one. You should close application now and edit it.");
             settings = new Settings();
             settings.setFilePath(configFilepath);
             settings.setQrzApiKey("CHANGEME");

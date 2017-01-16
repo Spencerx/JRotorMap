@@ -8,17 +8,28 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
- * Created by erxyi on 12.01.17.
+ * First implementation of IOutput - saves Result object in CSV-related manner.
  */
 public class DumpToFile implements IOutput {
 
-    String path_;
+    private String path_;
 
+    /**
+     * Constructor. Only saves a path into instance - whole process of writing to file is in saveOutput method.
+     * @param path file path.
+     */
     public DumpToFile(String path)
     {
         path_ = path;
     }
-    public void saveOutput(Result r)
+
+    /**
+     * Saves param to file specifed in constructor - it's worth noticing that it will append data into existing file.
+     * @param r Result object to be saved.
+     * @throws RuntimeException Exception is thrown while it's impossible to save it, i.e. access right problem.
+     */
+    @Override
+    public void saveOutput(Result r) throws RuntimeException
     {
         try(FileWriter fw = new FileWriter(path_, true))
         {

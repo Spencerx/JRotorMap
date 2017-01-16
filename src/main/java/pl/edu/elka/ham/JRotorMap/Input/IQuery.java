@@ -3,10 +3,17 @@ package pl.edu.elka.ham.JRotorMap.Input;
 import pl.edu.elka.ham.JRotorMap.Geography.Location;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Interface of query services.
  */
 public interface IQuery {
 
-    public Location getFoundLocation();
-    public String getQueryString();
+    /**
+     * @return Location returned by service.
+     */
+    Location getFoundLocation();
+
+    /**
+     * @return Input string - method is used later, i.e. in IOutput, to distinguish places in file by name.
+     */
+    String getQueryString();
 }

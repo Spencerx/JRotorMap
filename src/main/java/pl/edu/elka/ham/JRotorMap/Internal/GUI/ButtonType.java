@@ -1,7 +1,7 @@
-package pl.edu.elka.ham.JRotorMap.Internal;
+package pl.edu.elka.ham.JRotorMap.Internal.GUI;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Idea of this class is to abstract from working on Button name string to enum - it's simpler and easier to maintain.
  */
 public enum ButtonType {
     SAVE_TO_FILE("saveToFile"),
@@ -12,11 +12,18 @@ public enum ButtonType {
     NEW_HOME("newHome");
 
     private String name;
+
+    /**
+     * @param name Sets object name to param.
+     */
     ButtonType(String name)
     {
         this.name = name;
     }
 
+    /**
+     * @return returns object name string.
+     */
     public String getName() {
         return name;
     }

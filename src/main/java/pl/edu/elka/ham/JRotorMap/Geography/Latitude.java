@@ -1,7 +1,7 @@
 package pl.edu.elka.ham.JRotorMap.Geography;
 
 /**
- * Created by erxyi on 09.01.17.
+ * Latitude class.
  */
 public class Latitude extends Coordinate {
     public enum LatitudeDirections { North, South }

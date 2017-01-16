@@ -1,7 +1,7 @@
-package pl.edu.elka.ham.JRotorMap.Internal;
+package pl.edu.elka.ham.JRotorMap.Internal.GUI.Map;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Mixes png file from resources with selected color.
  */
 
 /*

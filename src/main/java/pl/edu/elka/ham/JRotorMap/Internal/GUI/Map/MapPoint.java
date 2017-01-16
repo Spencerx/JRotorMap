@@ -1,4 +1,4 @@
-package pl.edu.elka.ham.JRotorMap.Internal;
+package pl.edu.elka.ham.JRotorMap.Internal.GUI.Map;
 
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -7,7 +7,7 @@ import pl.edu.elka.ham.JRotorMap.Geography.Location;
 import java.awt.*;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Extension of JXMapViewer normal point, in order to show colorful map points.
  */
 public class MapPoint extends DefaultWaypoint {
     private final String label;
@@ -21,11 +21,11 @@ public class MapPoint extends DefaultWaypoint {
         this.color = color;
     }
 
-    public String getLabel() {
+    String getLabel() {
         return label;
     }
 
-    public Color getColor() {
+    Color getColor() {
         return color;
     }
 }

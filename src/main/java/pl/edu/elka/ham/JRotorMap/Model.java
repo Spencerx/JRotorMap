@@ -10,23 +10,31 @@ import pl.edu.elka.ham.JRotorMap.Output.DumpToFile;
 import pl.edu.elka.ham.JRotorMap.Output.IOutput;
 
 /**
- * Created by erxyi on 10.01.17.
+ * Model - manages information about last Result object, makes calculation and saves it if desired.
  */
 public class Model extends java.util.Observable {
 
-    Location queriedLocation;
-    Settings settings;
-    Result lastResult;
+    private Location queriedLocation;
+    private Settings settings;
+    private Result lastResult;
 
+    /**
+     * Default constructor.
+     * @param s Settings object.
+     */
     public Model(Settings s)
     {
         settings = s;
     }
 
-    public void processQuery(IQuery inputQuery)
+    /**
+     * Process a query - gets latitude/longitude from param and notifies all observers about result.
+     * @param inputQuery object which implements IQuery interface with data to process.
+     */
+    void processQuery(IQuery inputQuery)
     {
         queriedLocation = inputQuery.getFoundLocation();
-        System.out.println("Found:" + queriedLocation.exportString());
+       // System.out.println("Found:" + queriedLocation.exportString());
         double azimuth;
 
         GeodesicData g = Geodesic.WGS84.Inverse(settings.getUserLocation().getLatitude().getSignDDD(),
@@ -42,14 +50,23 @@ public class Model extends java.util.Observable {
         notifyObservers(result);
     }
 
-    public void setTargetAsHome()
+    /**
+     * Sets last target as new home and updates the internal Settings object.
+     * @see Settings
+     */
+    void setTargetAsHome()
     {
         settings.setUserLocation(queriedLocation);
         setChanged();
         notifyObservers(lastResult);
     }
 
-    public void saveToFile(String path)
+
+    /**
+     * Saves last Result(stored privately in object) into file.
+     * @param path Filepath.
+     */
+    void saveToFile(String path)
     {
         IOutput io = new DumpToFile(path);
         io.saveOutput(lastResult);

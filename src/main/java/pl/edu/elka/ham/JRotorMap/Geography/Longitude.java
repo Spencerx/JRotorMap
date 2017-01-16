@@ -1,7 +1,7 @@
 package pl.edu.elka.ham.JRotorMap.Geography;
 
 /**
- * Created by erxyi on 09.01.17.
+ * Abstraction of Longitude.
  */
 public class Longitude extends Coordinate {
     public enum LongitudeDirections {East, West }
@@ -37,6 +37,9 @@ public class Longitude extends Coordinate {
         return Double.toString(super.getDDD()) + " " + d;
     }
 
+    /**
+     * @return Longitude degrees in DDD format(one double), west is represented by negative numbers.
+     */
     public double getSignDDD()
     {
         double d = super.getDDD();

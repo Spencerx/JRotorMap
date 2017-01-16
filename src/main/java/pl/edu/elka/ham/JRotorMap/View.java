@@ -16,9 +16,13 @@ import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.viewer.*;
 import pl.edu.elka.ham.JRotorMap.Geography.Result;
 import pl.edu.elka.ham.JRotorMap.Internal.*;
+import pl.edu.elka.ham.JRotorMap.Internal.GUI.ButtonType;
+import pl.edu.elka.ham.JRotorMap.Internal.GUI.Map.MapPoint;
+import pl.edu.elka.ham.JRotorMap.Internal.GUI.Map.MapPointRenderer;
+import pl.edu.elka.ham.JRotorMap.Internal.GUI.Map.RoutePainter;
 
 /**
- * Created by erxyi on 10.01.17.
+ * View class. Draws GUI.
  */
 class View implements java.util.Observer, ItemListener, ActionListener {
 
@@ -26,41 +30,45 @@ class View implements java.util.Observer, ItemListener, ActionListener {
     /*
         Input cards, qrz query card
      */
-    final static String HAMQTHPANEL = "HamQTH.com query";
-    final static String GMPANEL = "Google Maps query";
-    final static String MPANEL = "Manual method";
+    private final static String HAMQTHPANEL = "HamQTH.com query";
+    private final static String GMPANEL = "Google Maps query";
+    private final static String MPANEL = "Manual method";
 
-    ActionListener fileActionListener;
+    private ActionListener fileActionListener;
 
-    JTextField hamQTHQuery;
-    JButton hamQTHQueryButton;
+    private JTextField hamQTHQuery;
+    private JButton hamQTHQueryButton;
 
-    JTextField gmQuery;
-    JButton gmQueryButton;
+    private JTextField gmQuery;
+    private JButton gmQueryButton;
 
-    JTextField mQuery;
-    JButton mQueryButton;
-    JButton resetMapButton;
+    private JTextField mQuery;
+    private JButton mQueryButton;
+    private JButton resetMapButton;
 
-    JPanel inputCards;
+    private JPanel inputCards;
 
-    JXMapViewer mapViewer;
-    JButton newHomeButton;
+    private JXMapViewer mapViewer;
+    private JButton newHomeButton;
 
-    JTextField answerAzimuth;
-    JTextField answerDistance;
-    JButton answerSaveToFileButton;
+    private JTextField answerAzimuth;
+    private JTextField answerDistance;
+    private JButton answerSaveToFileButton;
 
-    JTextField answerLatitude;
-    JTextField answerLongitude;
+    private JTextField answerLatitude;
+    private JTextField answerLongitude;
 
-    Settings settings;
+    private Settings settings;
 
-    Set<MapPoint> waypoints = new HashSet<MapPoint>();
+    private Set<MapPoint> waypoints = new HashSet<>();
     private final WaypointPainter<MapPoint> waypointPainter;
     private final RoutePainter routePainter;
     private final JFrame frame;
 
+    /**
+     * Default constructor.
+     * @param s Application-wide Settings object.
+     */
     View(Settings s) {
         settings = s;
         frame = new JFrame("JRotorMap");
@@ -135,13 +143,13 @@ class View implements java.util.Observer, ItemListener, ActionListener {
         mapViewer.setTileFactory(tileFactory);
         tileFactory.setThreadPoolSize(8);
         resetWaypoints();
-        waypointPainter = new WaypointPainter<MapPoint>();
+        waypointPainter = new WaypointPainter<>();
         waypointPainter.setWaypoints(waypoints);
         waypointPainter.setRenderer(new MapPointRenderer());
 
         routePainter = new RoutePainter(waypoints);
 
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>();
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<>();
         painter.addPainter(routePainter);
         painter.addPainter(waypointPainter);
 
@@ -160,7 +168,6 @@ class View implements java.util.Observer, ItemListener, ActionListener {
             Output Panel
          */
         JPanel resultPanel = new JPanel();
-        JPanel logPanel = new JPanel();
         answerAzimuth = new JTextField();
         resizeTextField(answerAzimuth);
         answerDistance = new JTextField();
@@ -210,12 +217,15 @@ class View implements java.util.Observer, ItemListener, ActionListener {
         answerSaveToFileButton.setName(ButtonType.SAVE_TO_FILE.getName());
         resetMapButton.setName(ButtonType.RESET_MAP.getName());
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(800, 500);
         frame.setVisible(true);
         frame.setResizable(false);
     }
 
+    /**
+     * Resets map state, deletes target from internal structures.
+     */
     private void resetWaypoints() {
         waypoints.clear();
         waypoints.add(new MapPoint("You", Color.GREEN, settings.getUserLocation()));
@@ -242,6 +252,12 @@ class View implements java.util.Observer, ItemListener, ActionListener {
         queryField.setMaximumSize(new Dimension(Integer.MAX_VALUE, queryField.getPreferredSize().height));
     }
 
+    /**
+     * @param obs Object which was updated.
+     * @param obj Updated information - in all cases it's an Result object.
+     * @see Result
+     */
+    @Override
     public void update(Observable obs, Object obj) {
         Result result = (Result)obj;
         DecimalFormat df = new DecimalFormat("#.###", new DecimalFormatSymbols(Locale.US));
@@ -256,10 +272,14 @@ class View implements java.util.Observer, ItemListener, ActionListener {
         waypoints.add(new MapPoint("Target", Color.ORANGE, result.getDestination()));
         waypointPainter.setWaypoints(waypoints);
         routePainter.updateTrack(waypoints);
-        resetMap();
+        redrawMap();
     }
 
-    public void addController(ActionListener c) {
+    /**
+     * Adds reference to controller, making all buttons usable.
+     * @param c Controller object.
+     */
+    void addController(ActionListener c) {
         newHomeButton.addActionListener(c);
         resetMapButton.addActionListener(c);
         answerSaveToFileButton.addActionListener(this);
@@ -272,6 +292,11 @@ class View implements java.util.Observer, ItemListener, ActionListener {
 
     }
 
+    /**
+     * Method which is responsible to carry and redraw input cards.
+     * @param evt Event item.
+     */
+    @Override
     public void itemStateChanged(ItemEvent evt) {
         if(evt.getSource() instanceof JComboBox) {
             JComboBox cb = (JComboBox)evt.getSource();
@@ -283,9 +308,11 @@ class View implements java.util.Observer, ItemListener, ActionListener {
     }
 
 
-
-    public void resetMap() {
-        HashSet<GeoPosition> gp = new HashSet<GeoPosition>();
+    /**
+     * Redraws a map.
+     */
+    void redrawMap() {
+        HashSet<GeoPosition> gp = new HashSet<>();
         for (MapPoint mp : waypoints)
             gp.add(mp.getPosition());
 
@@ -293,21 +320,44 @@ class View implements java.util.Observer, ItemListener, ActionListener {
         SwingUtilities.updateComponentTreeUI(frame);
     }
 
-    public String getManualQueryString()
+    /**
+     * Return latitude and longitude inserted by user.
+     * @return User input from "Manual query" text box.
+     */
+    String getManualQueryString()
     {
         return mQuery.getText();
     }
-    public String getGoogleMapsQueryString()
+
+    /**
+     * Returns location query from "Google Maps" card.
+     * @return User input from "Google Maps query" text box.
+     */
+    String getGoogleMapsQueryString()
     {
         return gmQuery.getText();
     }
-    public String getHamQTHQueryString() { return hamQTHQuery.getText(); }
+
+    /**
+     * Returns callsign from HamQTH.com
+     * @return Callsign inserted by user.
+     */
+    String getHamQTHQueryString() { return hamQTHQuery.getText(); }
 
 
-    public void showError(String message) {
+    /**
+     * Shows an error messagebox - useful to inform user about exceptions.
+     * @param message Message to be shown.
+     */
+    void showError(String message) {
         JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Method which carry "Save to file" button - shows the JFileChooser and passes string to Controller.
+     * @param e Action event.
+     */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() instanceof JButton)
         {

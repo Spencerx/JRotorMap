@@ -3,11 +3,17 @@ package pl.edu.elka.ham.JRotorMap.Input;
 import pl.edu.elka.ham.JRotorMap.Geography.Location;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Query service where user selects location by hand, inserting latitude and longitude.
  */
 public class ManualQuery implements IQuery {
-    Location loc;
-    String query;
+    private Location loc;
+    private String query;
+
+    /**
+     * Default constructor.
+     * @param input Latitude and longitude entered by user.
+     * @throws RuntimeException If user was a bad guy and forgot about something(i.e. comma).
+     */
     public ManualQuery(String input)
     {
         query = input;
@@ -20,11 +26,18 @@ public class ManualQuery implements IQuery {
      }
     }
 
+    /**
+     * @return query string from constructor.
+     */
     @Override
     public String getQueryString() {
         return query;
     }
 
+    /**
+     * @return location from input string.
+     */
+    @Override
     public Location getFoundLocation()
     {
         return loc;

@@ -1,17 +1,15 @@
-package pl.edu.elka.ham.JRotorMap.Internal;
+package pl.edu.elka.ham.JRotorMap.Internal.GUI.Map;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
-import pl.edu.elka.ham.JRotorMap.Geography.Location;
 import org.jxmapviewer.painter.Painter;
-import javax.swing.*;
+
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.*;
-import java.util.List;
 
 /**
- * Created by erxyi on 12.01.17.
+ * Paints route on JXMapViewer. Shouldn't be used alone.
  */
 public class RoutePainter implements Painter<JXMapViewer> {
     private Color color = Color.RED;
